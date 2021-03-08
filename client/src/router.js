@@ -1,67 +1,76 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Home from './views/Home.vue'
-import store from './store';
+import Vue from "vue";
+import Router from "vue-router";
+import Home from "./views/Home.vue";
+import store from "./store";
 
-Vue.use(Router)
+Vue.use(Router);
 
 const router = new Router({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
-  routes: [{
-      path: '/',
-      name: 'home',
-      component: Home
+  routes: [
+    {
+      path: "/",
+      name: "home",
+      component: Home,
     },
     {
-      path: '/about',
-      name: 'about',
-      component: () => import('./views/About.vue')
+      path: "/about",
+      name: "about",
+      component: () => import("./views/About.vue"),
     },
     {
-      path: '/login',
-      name: 'login',
-      component: () => import('./views/Login.vue'),
+      path: "/login",
+      name: "login",
+      component: () => import("./views/Login.vue"),
       meta: {
-        requiresGuest: true
-      }
+        requiresGuest: true,
+      },
     },
     {
-      path: '/register',
-      name: 'register',
-      component: () => import('./views/Register.vue'),
+      path: "/details/:postId",
+      name: "details",
+      component: () => import("./views/Details.vue"),
       meta: {
-        requiresGuest: true
-      }
+        requiresAuth: true,
+      },
     },
     {
-      path: '/profile',
-      name: 'profile',
-      component: () => import('./views/Profile.vue'),
+      path: "/register",
+      name: "register",
+      component: () => import("./views/Register.vue"),
       meta: {
-        requiresAuth: true
-      }
+        requiresGuest: true,
+      },
     },
-  ]
+    {
+      path: "/profile",
+      name: "profile",
+      component: () => import("./views/Profile.vue"),
+      meta: {
+        requiresAuth: true,
+      },
+    },
+  ],
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!store.getters.isLoggedIn) {
       // Redirect to the Login Page
-      next('/login');
+      next("/login");
     } else {
       next();
     }
-  } else if (to.matched.some(record => record.meta.requiresGuest)) {
+  } else if (to.matched.some((record) => record.meta.requiresGuest)) {
     if (store.getters.isLoggedIn) {
       // Redirect to the Login Page
-      next('/profile');
+      next("/profile");
     } else {
       next();
     }
   } else {
-    next()
+    next();
   }
 });
 

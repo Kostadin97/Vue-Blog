@@ -24,10 +24,4 @@ export default {
 };
 </script>
 <style>
-.card {
-  border-radius: 0px;
-}
-.btn {
-  border-radius: 0px;
-}
 </style>
