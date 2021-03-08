@@ -62,9 +62,6 @@ export default {
             this.$router.push("/profile");
           }
         })
-        .catch(err => {
-          console.log(err);
-        });
     }
   }
 };
