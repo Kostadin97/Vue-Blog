@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <router-link class="navbar-brand" to="/">MEVN-Auth</router-link>
+    <router-link class="navbar-brand" to="/">MEVN</router-link>
     <button
       class="navbar-toggler"
       type="button"
