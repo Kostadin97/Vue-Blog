@@ -3,7 +3,7 @@
     <h2>Login</h2>
     <div class="row">
       <div class="card mx-auto">
-        <div class="card-header text-white bg-primary">
+        <div class="card-header text-white bg-dark">
           <h4>Login</h4>
         </div>
         <div class="card-body">
@@ -30,11 +30,7 @@
                 v-model="password"
               />
             </div>
-            <input type="submit" class="btn btn-primary" value="Login" />
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <router-link to="/register" class="card-link"
-              >Need and account?</router-link
-            >
+            <input type="submit" class="btn btn-dark" value="Login" />
           </form>
         </div>
       </div>

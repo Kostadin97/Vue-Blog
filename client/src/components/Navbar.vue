@@ -36,7 +36,7 @@
           <router-link to="/profile" class="nav-link">Profile</router-link>
         </li>
         <li class="nav-item" v-if="isLoggedIn">
-          <a to="/logout" class="nav-link" @click.prevent="logoutUser">Logout</a>
+          <a href="#" to="/logout" class="nav-link" @click.prevent="logoutUser">Logout</a>
         </li>
       </ul>
     </div>

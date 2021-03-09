@@ -3,7 +3,7 @@
     <h2>Register</h2>
     <div class="row">
       <div class="card mx-auto">
-        <div class="card-header text-white bg-primary">
+        <div class="card-header text-white bg-dark">
           <h4>Register</h4>
         </div>
         <div class="card-body">
@@ -63,9 +63,7 @@
                 v-model="confirm_password"
               >
             </div>
-            <button class="btn btn-primary">Register</button>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <router-link to="/login" class="card-link">Already have an account?</router-link>
+            <button class="btn btn-dark">Register</button>
           </form>
         </div>
       </div>
