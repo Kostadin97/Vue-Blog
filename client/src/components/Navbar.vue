@@ -26,6 +26,9 @@
         <li class="nav-item" v-if="!isLoggedIn">
           <router-link to="/login" class="nav-link">Login</router-link>
         </li>
+        <li class="nav-item" v-if="isLoggedIn">
+          <router-link to="/create" class="nav-link">Create Post</router-link>
+        </li>
         <li class="nav-item" v-if="!isLoggedIn">
           <router-link to="/register" class="nav-link">Register</router-link>
         </li>

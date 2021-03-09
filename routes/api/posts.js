@@ -20,7 +20,7 @@ router.get("/:id", (req, res) => {
 router.post("/create", (req, res) => {
   const { title, description, imageUrl } = req.body;
   console.log(req.headers);
-  const token = req.headers.token.split(" ")[1];
+  const token = req.headers.authorization.split(" ")[1];
   const decoded = jwt.verify(token, "yoursecret");
 
   const userId = decoded._id;
