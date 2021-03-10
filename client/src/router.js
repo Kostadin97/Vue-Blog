@@ -41,6 +41,14 @@ const router = new Router({
       },
     },
     {
+      path: "/edit/:postId",
+      name: "edit",
+      component: () => import("./views/EditPost.vue"),
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
       path: "/register",
       name: "register",
       component: () => import("./views/Register.vue"),

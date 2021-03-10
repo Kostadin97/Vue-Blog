@@ -14,13 +14,16 @@
             <p class="card-text">
               {{ post.description }}
             </p>
+
             <router-link
               class="btn btn-light card-link"
-              :to="`/edit/${post._id}`"
-              >Edit</router-link
+              style="float: left; width: 45%;"
+              :to="`/like/${post._id}`"
+              >Like</router-link
             >
             <router-link
               class="btn btn-dark card-link"
+              style="float: left; width: 45%;"
               :to="`/details/${post._id}`"
               >Details</router-link
             >

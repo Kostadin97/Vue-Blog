@@ -4,7 +4,10 @@
       <div class="col-lg-6">
         <div class="card" style="width: 30rem;">
           <div class="card-body">
-            <h5 class="card-title" style="text-align: center; font-weight: bold; font-family: 'Courier New', monospace; font-size: 25px">
+            <h5
+              class="card-title"
+              style="text-align: center; font-weight: bold; font-family: 'Courier New', monospace; font-size: 25px"
+            >
               {{ post.title }}
             </h5>
           </div>
@@ -17,7 +20,7 @@
             <router-link
               class="btn btn-light card-link"
               style="float: left; width: 45%;"
-              to=""
+              :to="`/edit/${post._id}`"
             >
               Edit
             </router-link>
@@ -31,12 +34,16 @@
         </div>
       </div>
       <div class="col-lg-6" style="text-align: center;">
-        <h3 style="text-decoration: underline; font-weight: bold; font-family: 'Courier New', monospace; font-size: 25px; margin-top: 15px;">Description</h3>
-        <br>
+        <h3
+          style="text-decoration: underline; font-weight: bold; font-family: 'Courier New', monospace; font-size: 25px; margin-top: 15px;"
+        >
+          Description
+        </h3>
+        <br />
         <p>{{ post.description }}</p>
-        <router-link class="btn btn-light card-link" to="">
-          Edit
-        </router-link>
+        <router-link class="btn btn-dark card-link" :to="`/edit/${post._id}`"
+          >Details</router-link
+        >
         <a class="btn btn-dark card-link" href="#">Like</a>
       </div>
     </div>
@@ -51,7 +58,7 @@ export default {
   data() {
     return {
       post: {},
-      image
+      image,
     };
   },
   created() {
