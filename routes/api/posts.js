@@ -109,7 +109,39 @@ router.get("/like/:id", (req, res) => {
     })
     .catch((err) => {
       return res.status(500).json({
-        msg: `Error deleting post with id: ${id}`,
+        msg: `Post with id: ${id} was NOT liked successfully.`,
+      });
+    });
+});
+
+router.put("/comment/:id", (req, res) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, "yoursecret");
+
+  const id = req.params.id;
+
+  const newComment = {
+    comment: req.body.comment,
+    author: {
+      userId: decoded._id,
+      username: decoded.username,
+      name: decoded.name,
+      email: decoded.email,
+    }
+  }
+console.log(req.body.comment);
+
+  Post.findById(id)
+    .then((post) => {
+      post.comments.push(newComment);
+      post.save();
+    })
+    .then(() => {
+      return res.status(200).json({ msg: "Comment Successful." });
+    })
+    .catch((err) => {
+      return res.status(500).json({
+        msg: `Post with id: ${id} was NOT commented successfully.`,
       });
     });
 });

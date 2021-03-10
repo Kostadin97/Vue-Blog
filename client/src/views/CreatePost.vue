@@ -39,9 +39,8 @@
                 v-model="imageUrl"
                 class="form-control"
               />
+              <button class="btn btn-dark">Create</button>
             </div>
-
-            <button class="btn btn-dark">Create</button>
           </form>
         </div>
       </div>

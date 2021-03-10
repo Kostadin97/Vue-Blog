@@ -48,25 +48,32 @@
         <br />
         <div class="row">
           <div class="col-lg-6">
-            <a v-on:click="likePost" class="btn btn-primary" href="#">Like</a>
+            <button v-on:click="likePost" class="btn btn-primary" style="color: white;">Like</button>
           </div>
           <div class="col-lg-6">Likes: {{ likesLength }}</div>
         </div>
         <br />
         <h5>Comments</h5>
-        <div style="margin-top: 20px;" class="row">
-          <div class="col-lg-8" style="float: left; width: 65%;">
-            <input
-              class="form-control"
-              style="width: 100%;"
-              type="text"
-              placeholder="Place your comment here..."
-            />
-            <p style="margin-top: 40px;">1. First Comment</p>
+        <div style="margin-top: 20px;">
+          <div style="width: 100%; padding: 10px;">
+            <form @submit.prevent="commentPost">
+              <div class="form-group form-input">
+                <input
+                  id="commentText"
+                  type="text"
+                  name="commentText"
+                  class="form-control"
+                  placeholder="Place your comment here..."
+                  v-model="commentText"
+                />
+              </div>
+              <button class="btn btn-dark form-button">Comment</button>
+            </form>
           </div>
-          <div class="col-lg-4" style="float: right; width: 30%;">
+          <p style="text-align: left;" v-for="(comment, index) in post.comments" :key="index">{{comment.author.username}}: {{comment.comment}}</p>
+          <!-- <div class="col-lg-4" style="float: right; width: 30%;">
             <a href="#" class="btn btn-dark card-link">Comment</a>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -80,6 +87,7 @@ export default {
   data() {
     return {
       post: {},
+      commentText: "",
       likesLength: 0,
     };
   },
@@ -87,8 +95,20 @@ export default {
     likePost() {
       const postId = this.$route.params.postId;
       axios.get(`http://localhost:5000/api/posts/like/${postId}`).then(() => {
-        this.$router.push("/");
+        this.$router.go();
       });
+    },
+
+    commentPost() {
+      const postId = this.$route.params.postId;
+      const commentBody = {
+        comment: this.commentText
+      };
+      axios
+        .put(`http://localhost:5000/api/posts/comment/${postId}`, commentBody)
+        .then(() => {
+          this.$router.go();
+        });
     },
   },
 
@@ -109,5 +129,15 @@ a {
 }
 hr {
   border-top: 1px dashed red;
+}
+.form-input {
+  display: inline-block;
+  width: 65%;
+}
+.form-button {
+  display: inline-block;
+  width: 30%;
+  margin-left: 10px;
+  margin-bottom: 5px;
 }
 </style>
