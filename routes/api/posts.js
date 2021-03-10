@@ -30,6 +30,13 @@ router.post("/create", (req, res) => {
       msg: "Please fill all the inputs.",
     });
   }
+
+  if (description.length < 50) {
+    return res.status(400).json({
+      msg: "Description must be at least 30 characters long.",
+    });
+  }
+
   const newPost = new Post({
     title,
     description,

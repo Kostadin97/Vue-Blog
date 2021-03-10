@@ -40,7 +40,7 @@
                 class="form-control"
               />
             </div>
-            
+
             <button class="btn btn-dark">Create</button>
           </form>
         </div>
@@ -80,12 +80,8 @@ export default {
 <style>
 .card {
   width: 60%;
-  border-radius: 0;
 }
-.btn {
-  border-radius: 0;
-}
-.form-control {
-  border-radius: 0;
+a {
+  border-radius: 10px;
 }
 </style>

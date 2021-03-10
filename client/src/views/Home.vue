@@ -12,15 +12,16 @@
             <h5 class="card-title">{{ post.title }}</h5>
 
             <p class="card-text">
-              {{ post.description }}
+              {{ post.description.slice(0, 100) + "..." }}
             </p>
 
             <router-link
               class="btn btn-light card-link"
               style="float: left; width: 45%;"
-              :to="`/like/${post._id}`"
-              >Like</router-link
+              :to="`/edit/${post._id}`"
             >
+              Edit
+            </router-link>
             <router-link
               class="btn btn-dark card-link"
               style="float: left; width: 45%;"
@@ -54,7 +55,19 @@ export default {
 </script>
 
 <style>
+.card {
+  border-radius: 30px;
+}
 .card-div {
   margin-top: 30px;
+}
+.description-p {
+  color: red;
+}
+#description-paragraph {
+  color: red;
+}
+router-link {
+  border-radius: 30px;
 }
 </style>

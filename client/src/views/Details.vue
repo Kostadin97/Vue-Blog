@@ -40,11 +40,34 @@
           Description
         </h3>
         <br />
-        <p>{{ post.description }}</p>
-        <router-link class="btn btn-dark card-link" :to="`/edit/${post._id}`"
-          >Details</router-link
-        >
-        <a class="btn btn-dark card-link" href="#">Like</a>
+        <hr />
+        <br />
+        <p style="text-align: left;">{{ post.description }}</p>
+        <br />
+        <hr />
+        <br />
+        <div class="row">
+          <div class="col-lg-6">
+            <a v-on:click="likePost" class="btn btn-primary" href="#">Like</a>
+          </div>
+          <div class="col-lg-6">Likes: {{ likesLength }}</div>
+        </div>
+        <br />
+        <h5>Comments</h5>
+        <div style="margin-top: 20px;" class="row">
+          <div class="col-lg-8" style="float: left; width: 65%;">
+            <input
+              class="form-control"
+              style="width: 100%;"
+              type="text"
+              placeholder="Place your comment here..."
+            />
+            <p style="margin-top: 40px;">1. First Comment</p>
+          </div>
+          <div class="col-lg-4" style="float: right; width: 30%;">
+            <a href="#" class="btn btn-dark card-link">Comment</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -52,22 +75,39 @@
 
 <script>
 import axios from "axios";
-import image from "../assets/pexels-lumn-316466.jpeg";
 
 export default {
   data() {
     return {
       post: {},
-      image,
+      likesLength: 0,
     };
   },
+  methods: {
+    likePost() {
+      const postId = this.$route.params.postId;
+      axios.get(`http://localhost:5000/api/posts/like/${postId}`).then(() => {
+        this.$router.push("/");
+      });
+    },
+  },
+
   created() {
     const postId = this.$route.params.postId;
+
     axios.get(`http://localhost:5000/api/posts/${postId}`).then((result) => {
       this.post = result.data;
+      this.likesLength = result.data.likes.length;
     });
   },
 };
 </script>
 
-<style></style>
+<style>
+a {
+  border-radius: 10px;
+}
+hr {
+  border-top: 1px dashed red;
+}
+</style>
