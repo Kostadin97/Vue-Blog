@@ -27,6 +27,7 @@
             <a
               class="btn btn-dark card-link"
               style="float: right; width: 45%;"
+              v-on:click="deletePost"
               href="#"
               >Delete</a
             >
@@ -104,8 +105,15 @@ export default {
     unlikePost() {
       const postId = this.$route.params.postId;
       axios.get(`http://localhost:5000/api/posts/unlike/${postId}`).then(() => {
-      this.$router.go();
-    });
+        this.$router.go();
+      });
+    },
+    
+    deletePost() {
+      const postId = this.$route.params.postId;
+      axios.delete(`http://localhost:5000/api/posts/delete/${postId}`).then(() => {
+        this.$router.push(`/`);
+      });
     },
 
     commentPost() {

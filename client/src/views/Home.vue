@@ -6,13 +6,13 @@
         :key="post._id"
         class="col-lg-4 col-md-6 col-sm-12 card-div"
       >
-        <div class="card" style="width: 18rem;">
+        <div id="card" class="card" style="width: 18rem;">
           <img class="card-img-top" :src="post.imageUrl" alt="Card image cap" />
           <div class="card-body">
             <h5  class="card-title">{{ post.likes.includes() }}</h5>
 
             <p class="card-text">
-              {{ post.description.slice(0, 100) + "..." }}
+              {{ post.description.slice(0, 90) + "..." }}
             </p>
 
             <router-link
@@ -61,12 +61,8 @@ export default {
 .card-div {
   margin-top: 30px;
 }
-.description-p {
-  color: red;
-}
-#description-paragraph {
-  color: red;
-}
+
+
 router-link {
   border-radius: 30px;
 }
