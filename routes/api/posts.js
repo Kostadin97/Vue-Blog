@@ -122,6 +122,35 @@ router.get("/like/:id", (req, res) => {
     });
 });
 
+router.get("/unlike/:id", (req, res) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, "yoursecret");
+  const userId = decoded._id;
+
+  const id = req.params.id;
+
+  Post.findById(id)
+    .then((post) => {
+      const likesArray = post.likes;
+      if (!likesArray.includes(userId)) {
+        return res.status(500).json({
+          msg: `Post is not liked.`,
+        });
+      }
+      const index = likesArray.indexOf(userId);
+      post.likes.splice(index, 1);
+      post.save();
+    })
+    .then(() => {
+      return res.status(200).json({ msg: "Post Liked." });
+    })
+    .catch((err) => {
+      return res.status(500).json({
+        msg: `Post with id: ${id} was NOT liked successfully.`,
+      });
+    });
+});
+
 router.put("/comment/:id", (req, res) => {
   const token = req.headers.authorization.split(" ")[1];
   const decoded = jwt.verify(token, "yoursecret");

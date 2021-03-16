@@ -101,6 +101,12 @@ export default {
         this.$router.go();
       });
     },
+    unlikePost() {
+      const postId = this.$route.params.postId;
+      axios.get(`http://localhost:5000/api/posts/unlike/${postId}`).then(() => {
+      this.$router.go();
+    });
+    },
 
     commentPost() {
       const postId = this.$route.params.postId;
