@@ -1,34 +1,35 @@
 <template>
   <div class="container">
+    <h1 class="latest-posts-h1">Latest Posts</h1>
+    <hr />
     <div class="row">
-      <div
-        v-for="post in posts"
-        :key="post._id"
-        class="col-lg-4 col-md-6 col-sm-12 card-div"
-      >
-        <div id="card" class="card" style="width: 18rem;">
-          <img class="card-img-top" :src="post.imageUrl" alt="Card image cap" />
-          <div class="card-body">
-            <h5  class="card-title">{{ post.likes.includes() }}</h5>
+      <div id="card" class="card" v-for="post in posts" :key="post._id">
+        <img
+          style="max-height: 190px;"
+          class="card-img-top"
+          :src="post.imageUrl"
+          alt="Card image cap"
+        />
+        <div class="card-body">
+          <h5 class="card-title">{{ post.likes.includes() }}</h5>
 
-            <p class="card-text">
-              {{ post.description.slice(0, 90) + "..." }}
-            </p>
+          <p class="card-text">
+            {{ post.description.slice(0, 30) + "..." }}
+          </p>
 
-            <router-link
-              class="btn btn-light card-link"
-              style="float: left; width: 45%;"
-              :to="`/edit/${post._id}`"
-            >
-              Edit
-            </router-link>
-            <router-link
-              class="btn btn-dark card-link"
-              style="float: left; width: 45%;"
-              :to="`/details/${post._id}`"
-              >Details</router-link
-            >
-          </div>
+          <router-link
+            class="btn btn-light card-link"
+            style="float: left; width: 45%;"
+            :to="`/edit/${post._id}`"
+          >
+            Edit
+          </router-link>
+          <router-link
+            class="btn btn-dark card-link"
+            style="float: left; width: 45%;"
+            :to="`/details/${post._id}`"
+            >Details</router-link
+          >
         </div>
       </div>
     </div>
@@ -41,12 +42,11 @@ import axios from "axios";
 export default {
   name: "home",
   data() {
-    return {  
+    return {
       posts: [],
     };
   },
   created() {
-    
     axios.get("http://localhost:5000/api/posts").then((result) => {
       this.posts = result.data;
     });
@@ -56,12 +56,16 @@ export default {
 
 <style>
 .card {
-  border-radius: 30px;
-}
-.card-div {
-  margin-top: 30px;
+  width: 18rem;
+  margin-left: 6%;
+  margin-top: 20px;
 }
 
+.latest-posts-h1 {
+  margin-top: 10px;
+  margin-bottom: 40px;
+  text-align: center;
+}
 
 router-link {
   border-radius: 30px;
