@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Post = require("../../model/Post");
+const User = require("../../model/User");
 const jwt = require("jsonwebtoken");
 
 router.get("/", (req, res) => {
@@ -99,8 +100,15 @@ router.get("/like/:id", (req, res) => {
   const userId = decoded._id;
 
   const id = req.params.id;
+
   Post.findById(id)
     .then((post) => {
+      const likesArray = post.likes;
+      if (likesArray.includes(userId)) {
+        return res.status(500).json({
+          msg: `Post already liked.`,
+        });
+      }
       post.likes.push(userId);
       post.save();
     })
@@ -127,9 +135,9 @@ router.put("/comment/:id", (req, res) => {
       username: decoded.username,
       name: decoded.name,
       email: decoded.email,
-    }
-  }
-console.log(req.body.comment);
+    },
+  };
+  console.log(req.body.comment);
 
   Post.findById(id)
     .then((post) => {

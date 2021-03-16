@@ -40,15 +40,16 @@
           Description
         </h3>
         <br />
-        <hr />
         <br />
         <p style="text-align: left;">{{ post.description }}</p>
         <br />
-        <hr />
         <br />
         <div class="row">
-          <div class="col-lg-6">
+          <div v-if="!post.likes.includes(userId)" class="col-lg-6">
             <button v-on:click="likePost" class="btn btn-primary" style="color: white;">Like</button>
+          </div>
+          <div v-if="post.likes.includes(userId)" class="col-lg-6">
+            <button v-on:click="unlikePost" class="btn btn-primary" style="color: white;">Unlike</button>
           </div>
           <div class="col-lg-6">Likes: {{ likesLength }}</div>
         </div>
@@ -82,10 +83,12 @@
 
 <script>
 import axios from "axios";
+import jwt from 'jsonwebtoken';
 
 export default {
   data() {
     return {
+      userId: "",
       post: {},
       commentText: "",
       likesLength: 0,
@@ -113,6 +116,10 @@ export default {
   },
 
   created() {
+    const token = localStorage.getItem('token').slice(7);
+    let decoded = jwt.verify(token, 'yoursecret');
+    this.userId = decoded._id;
+
     const postId = this.$route.params.postId;
 
     axios.get(`http://localhost:5000/api/posts/${postId}`).then((result) => {

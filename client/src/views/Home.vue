@@ -9,7 +9,7 @@
         <div class="card" style="width: 18rem;">
           <img class="card-img-top" :src="post.imageUrl" alt="Card image cap" />
           <div class="card-body">
-            <h5 class="card-title">{{ post.title }}</h5>
+            <h5  class="card-title">{{ post.likes.includes() }}</h5>
 
             <p class="card-text">
               {{ post.description.slice(0, 100) + "..." }}
@@ -41,15 +41,15 @@ import axios from "axios";
 export default {
   name: "home",
   data() {
-    return {
+    return {  
       posts: [],
     };
   },
   created() {
+    
     axios.get("http://localhost:5000/api/posts").then((result) => {
       this.posts = result.data;
     });
-    // console.log(this.posts);
   },
 };
 </script>
