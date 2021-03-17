@@ -102,6 +102,7 @@
 <script>
 import axios from "axios";
 import jwt from "jsonwebtoken";
+import { mapActions } from "vuex";
 
 export default {
   data() {
@@ -114,6 +115,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["getOne"]),
     likePost() {
       const postId = this.$route.params.postId;
 
@@ -168,16 +170,25 @@ export default {
         });
     },
   },
-
   created() {
     const token = localStorage.getItem("token").slice(7);
     let decoded = jwt.verify(token, "yoursecret");
     this.userId = decoded._id;
 
     const postId = this.$route.params.postId;
-    axios.get(`http://localhost:5000/api/posts/${postId}`).then((result) => {
-      this.post = result.data;
+
+    this.getOne(postId).then((res) => {
+      this.post = res.data;
     });
+    // axios.get(`http://localhost:5000/api/posts/${postId}`).then((result) => {
+    //   this.post = result.data;
+    //   this.likesLength = result.data.likes.length;
+    //   if (result.data.likes.includes(decoded._id)) {
+    //     this.hasLiked = true;
+    //   } else {
+    //     this.hasLiked = false;
+    //   }
+    // });
   },
 };
 </script>

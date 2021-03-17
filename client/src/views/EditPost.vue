@@ -51,6 +51,7 @@
 
 <script>
 import axios from "axios";
+import { mapActions } from "vuex";
 
 export default {
   data() {
@@ -62,6 +63,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["editPost"]),
     editPost() {
       const postId = this.$route.params.postId;
       let postData = {

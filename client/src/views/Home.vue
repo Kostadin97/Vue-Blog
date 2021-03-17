@@ -11,7 +11,7 @@
           alt="Card image cap"
         />
         <div class="card-body" v-if="renderMyComponent">
-          <h5 class="card-title">{{ post.likes.includes() }}</h5>
+          <h5 class="card-title">{{ post.title }}</h5>
 
           <p class="card-text">
             {{ post.description.slice(0, 30) + "..." }}
@@ -37,7 +37,8 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
+import { mapActions } from "vuex";
 
 export default {
   name: "home",
@@ -47,11 +48,18 @@ export default {
       posts: [],
     };
   },
+  methods: {
+    ...mapActions(["getAll"]),
+  },
   created() {
-    axios.get("http://localhost:5000/api/posts").then((result) => {
-      this.posts = result.data;
+    this.posts = this.getAll();
+    this.getAll().then((res) => {
+      this.posts = res.data;
     });
   },
+  // created() {
+
+  // },
 };
 </script>
 
