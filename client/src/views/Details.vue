@@ -46,11 +46,23 @@
         <br />
         <br />
         <div class="row">
-          <div v-if="!post.likes.includes(userId)" class="col-lg-6">
-            <button v-on:click="likePost" class="btn btn-primary" style="color: white;">Like</button>
+          <div class="col-lg-6" v-if="!hasLiked">
+            <button
+              v-on:click="likePost"
+              class="btn btn-primary"
+              style="color: white;"
+            >
+              Like
+            </button>
           </div>
-          <div v-if="post.likes.includes(userId)" class="col-lg-6">
-            <button v-on:click="unlikePost" class="btn btn-primary" style="color: white;">Unlike</button>
+          <div v-if="hasLiked" class="col-lg-6">
+            <button
+              v-on:click="unlikePost"
+              class="btn btn-primary"
+              style="color: white;"
+            >
+              Unlike
+            </button>
           </div>
           <div class="col-lg-6">Likes: {{ likesLength }}</div>
         </div>
@@ -69,13 +81,18 @@
                   v-model="commentText"
                 />
               </div>
-              <button class="btn btn-dark form-button">Comment</button>
+              <button class="btn btn-dark form-button">
+                Comment
+              </button>
             </form>
           </div>
-          <p style="text-align: left;" v-for="(comment, index) in post.comments" :key="index">{{comment.author.username}}: {{comment.comment}}</p>
-          <!-- <div class="col-lg-4" style="float: right; width: 30%;">
-            <a href="#" class="btn btn-dark card-link">Comment</a>
-          </div> -->
+          <p
+            style="text-align: left;"
+            v-for="(comment, index) in post.comments"
+            :key="index"
+          >
+            {{ comment.author.username }}: {{ comment.comment }}
+          </p>
         </div>
       </div>
     </div>
@@ -84,11 +101,12 @@
 
 <script>
 import axios from "axios";
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 
 export default {
   data() {
     return {
+      hasLiked: false,
       userId: "",
       post: {},
       commentText: "",
@@ -98,29 +116,51 @@ export default {
   methods: {
     likePost() {
       const postId = this.$route.params.postId;
+
       axios.get(`http://localhost:5000/api/posts/like/${postId}`).then(() => {
-        this.$router.go();
+        axios
+          .get(`http://localhost:5000/api/posts/${postId}`)
+          .then((result) => {
+            this.likesLength = result.data.likes.length;
+            if (this.hasLiked === false) {
+              this.hasLiked = true;
+            } else {
+              this.hasLiked = false;
+            }
+          });
       });
     },
     unlikePost() {
       const postId = this.$route.params.postId;
       axios.get(`http://localhost:5000/api/posts/unlike/${postId}`).then(() => {
-        this.$router.go();
+        axios
+          .get(`http://localhost:5000/api/posts/${postId}`)
+          .then((result) => {
+            this.likesLength = result.data.likes.length;
+            if (this.hasLiked === false) {
+              this.hasLiked = true;
+            } else {
+              this.hasLiked = false;
+            }
+          });
       });
     },
-    
+
     deletePost() {
       const postId = this.$route.params.postId;
-      axios.delete(`http://localhost:5000/api/posts/delete/${postId}`).then(() => {
-        this.$router.push(`/`);
-      });
+      axios
+        .delete(`http://localhost:5000/api/posts/delete/${postId}`)
+        .then(() => {
+          this.$router.push(`/`);
+        });
     },
 
     commentPost() {
       const postId = this.$route.params.postId;
       const commentBody = {
-        comment: this.commentText
+        comment: this.commentText,
       };
+
       axios
         .put(`http://localhost:5000/api/posts/comment/${postId}`, commentBody)
         .then(() => {
@@ -130,15 +170,13 @@ export default {
   },
 
   created() {
-    const token = localStorage.getItem('token').slice(7);
-    let decoded = jwt.verify(token, 'yoursecret');
+    const token = localStorage.getItem("token").slice(7);
+    let decoded = jwt.verify(token, "yoursecret");
     this.userId = decoded._id;
 
     const postId = this.$route.params.postId;
-
     axios.get(`http://localhost:5000/api/posts/${postId}`).then((result) => {
       this.post = result.data;
-      this.likesLength = result.data.likes.length;
     });
   },
 };

@@ -23,7 +23,7 @@ const UserSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  posts: [
+  savedPosts: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Post",

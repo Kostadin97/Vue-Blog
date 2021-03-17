@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1 class="latest-posts-h1">Latest Posts</h1>
+    <h1 class="latest-posts-h1">Saved Posts</h1>
     <hr />
     <div class="row">
       <div id="card" class="card" v-for="post in posts" :key="post._id">
@@ -10,7 +10,7 @@
           :src="post.imageUrl"
           alt="Card image cap"
         />
-        <div class="card-body" v-if="renderMyComponent">
+        <div class="card-body">
           <h5 class="card-title">{{ post.likes.includes() }}</h5>
 
           <p class="card-text">
@@ -43,7 +43,6 @@ export default {
   name: "home",
   data() {
     return {
-      renderMyComponent: true,
       posts: [],
     };
   },

@@ -20,7 +20,6 @@ router.get("/:id", (req, res) => {
 
 router.post("/create", (req, res) => {
   const { title, description, imageUrl } = req.body;
-  console.log(req.headers);
   const token = req.headers.authorization.split(" ")[1];
   const decoded = jwt.verify(token, "yoursecret");
 
@@ -47,12 +46,14 @@ router.post("/create", (req, res) => {
     author: userId,
   });
 
-  newPost.save().then(() => {
-    return res.status(201).json({
-      success: true,
-      msg: "Post Created Successfully.",
+  newPost
+    .save()
+    .then(() => {
+      return res.status(201).json({
+        success: true,
+        msg: "Post Created Successfully.",
+      });
     });
-  });
 });
 
 router.put("/edit/:id", (req, res) => {
@@ -166,7 +167,6 @@ router.put("/comment/:id", (req, res) => {
       email: decoded.email,
     },
   };
-  console.log(req.body.comment);
 
   Post.findById(id)
     .then((post) => {

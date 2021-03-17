@@ -46,6 +46,7 @@ router.post("/register", (req, res) => {
     username,
     password,
     email,
+    savedPosts: [],
   });
 
   // Hash the password

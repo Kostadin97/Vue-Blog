@@ -20,6 +20,11 @@ const router = new Router({
       component: () => import("./views/CreatePost.vue"),
     },
     {
+      path: "/saved",
+      name: "savedPosts",
+      component: () => import("./views/savedPosts.vue"),
+    },
+    {
       path: "/login",
       name: "login",
       component: () => import("./views/Login.vue"),
