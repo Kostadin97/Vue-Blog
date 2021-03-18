@@ -41,7 +41,9 @@
               />
             </div>
 
-            <button class="btn btn-dark">Edit</button>
+            <button class="btn btn-dark">
+              Edit
+            </button>
           </form>
         </div>
       </div>
@@ -63,10 +65,11 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["editPost"]),
+    ...mapActions(["edit"]),
+
     editPost() {
       const postId = this.$route.params.postId;
-      let postData = {
+      const postData = {
         title: this.post.title,
         description: this.post.description,
         imageUrl: this.post.imageUrl,
@@ -76,11 +79,16 @@ export default {
         .then(() => {
           this.$router.push(`/details/${postId}`);
         });
+
+      // this.edit(postId, postData).then(() => {
+      //   console.log(res);
+      //   this.$router.push(`/details/${postId}`);
+      // });
     },
   },
 
-  created() {
-    const postId = this.$route.params.postId;
+  async created() {
+    const postId = await this.$route.params.postId;
     axios.get(`http://localhost:5000/api/posts/${postId}`).then((result) => {
       this.post = result.data;
     });

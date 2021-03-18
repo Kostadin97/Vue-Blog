@@ -38,19 +38,17 @@ const actions = {
     }
   },
 
-  async editPost({ commit }, postId, postData) {
-    try {
-      commit("edit_request");
-      let res = await axios.put(
-        `http://localhost:5000/api/posts/edit/${postId}`,
-        postData
-      );
-      commit("edit_success");
-      return res;
-    } catch (error) {
-      commit("edit_error", error);
-    }
-  },
+  // async edit({ commit }, id, data) {
+  //   const postId = id;
+  //   const postData = data;
+  //   try {
+  //     commit("edit_request");
+  //     axios.put(`http://localhost:5000/api/posts/edit/${postId}`, postData);
+  //     commit("edit_success");
+  //   } catch (error) {
+  //     commit("edit_error", error);
+  //   }
+  // },
 
   async create({ commit }, postData) {
     try {
@@ -104,17 +102,17 @@ const mutations = {
   create_error(state, err) {
     state.error = err.response.data.msg;
   },
-  edit_request(state) {
-    state.error = null;
-    state.status = "loading";
-  },
-  edit_success(state) {
-    state.error = null;
-    state.status = "success";
-  },
-  edit_error(state, err) {
-    state.error = err.response.data.msg;
-  },
+  // edit_request(state) {
+  //   state.error = null;
+  //   state.status = "loading";
+  // },
+  // edit_success(state) {
+  //   state.error = null;
+  //   state.status = "success";
+  // },
+  // edit_error(state, err) {
+  //   state.error = err.response.data.msg;
+  // },
 };
 
 export default {
