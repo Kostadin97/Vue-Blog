@@ -53,6 +53,8 @@
 
 <script>
 import axios from "axios";
+import { mapActions } from "vuex";
+import store from "../store";
 
 export default {
   data() {
@@ -64,27 +66,44 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["edit"]),
+    ...mapActions(["getOne"]),
+
+    async loadPosts() {
+      let postId = await this.$route.params.postId;
+      let res = await this.getOne(postId);
+
+      this.post = await res.data;
+    },
+
     async editPost() {
-      let postId = this.$route.params.postId;
+      let postId = await this.$route.params.postId;
       let postData = {
         title: this.post.title,
         description: this.post.description,
         imageUrl: this.post.imageUrl,
       };
-      axios
-        .put(`http://localhost:5000/api/posts/edit/${postId}`, postData)
-        .then(() => {
-          this.$router.push(`/details/${postId}`);
-        });
+      const commit = await store.commit;
+      try {
+        commit("edit_request");
+
+        let res = await axios.put(
+          `http://localhost:5000/api/posts/edit/${postId}`,
+          postData
+        );
+        console.log(res);
+        if (res.data.success) {
+          commit("edit_success");
+          this.$router.push("/");
+        }
+      } catch (error) {
+        commit("edit_error", error);
+      }
     },
   },
 
-  created() {
-    const postId = this.$route.params.postId;
-
-    axios.get(`http://localhost:5000/api/posts/${postId}`).then((result) => {
-      this.post = result.data;
-    });
+  async created() {
+    await this.loadPosts();
   },
 };
 </script>

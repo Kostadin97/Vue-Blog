@@ -46,14 +46,12 @@ router.post("/create", (req, res) => {
     author: userId,
   });
 
-  newPost
-    .save()
-    .then(() => {
-      return res.status(201).json({
-        success: true,
-        msg: "Post Created Successfully.",
-      });
+  newPost.save().then(() => {
+    return res.status(201).json({
+      success: true,
+      msg: "Post Created Successfully.",
     });
+  });
 });
 
 router.put("/edit/:id", (req, res) => {
@@ -72,7 +70,11 @@ router.put("/edit/:id", (req, res) => {
         return res.status(404).json({
           msg: `Cannot update Tutorial with id=${id}. Maybe Tutorial was not found!`,
         });
-      } else return res.json({ msg: "Post was updated successfully." });
+      } else
+        return res.json({
+          success: true,
+          msg: "Post was updated successfully.",
+        });
     })
     .catch((err) => {
       return res.status(500).json({

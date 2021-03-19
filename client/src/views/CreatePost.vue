@@ -50,6 +50,7 @@
 
 <script>
 import { mapActions } from "vuex";
+// import postServices from "../services/postServices";
 export default {
   data() {
     return {
@@ -71,6 +72,11 @@ export default {
           this.$router.push("/");
         }
       });
+      // postServices.createPost(post).then((res) => {
+      //   if (res.data.success) {
+      //     this.$router.push("/");
+      //   }
+      // });
     },
   },
 };

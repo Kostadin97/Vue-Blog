@@ -1,4 +1,5 @@
 import axios from "axios";
+import store from '../store';
 
 const state = {
   error: null,
@@ -35,38 +36,38 @@ const actions = {
     }
   },
 
-  // async edit({ commit }, id, data) {
-  //   try {
-  //     const postId = id;
-  //     const postData = data;
-  //     commit("edit_request");
-  //     let res = axios.put(
-  //       `http://localhost:5000/api/posts/edit/${postId}`,
-  //       postData
-  //     );
-  //     commit("edit_success");
-  //     return res;
-  //   } catch (error) {
-  //     commit("edit_error", error);
-  //   }
-  // },
-
-  async create({ commit }, postData) {
+  async edit(id, data) {
     try {
-      commit("create_request");
-      let res = await axios.post(
-        "http://localhost:5000/api/posts/create",
+      const postId = id;
+      const postData = data;
+      store.commit("edit_request");
+      let res = axios.put(
+        `http://localhost:5000/api/posts/edit/${postId}`,
         postData
       );
-
-      if (res.data.success !== undefined) {
-        commit("create_success");
-      }
+      store.commit("edit_success");
       return res;
     } catch (error) {
-      commit("create_error", error);
+      store.commit("edit_error", error);
     }
   },
+
+  // async create({ commit }, postData) {
+  //   try {
+  //     commit("create_request");
+  //     let res = await axios.post(
+  //       "http://localhost:5000/api/posts/create",
+  //       postData
+  //     );
+
+  //     if (res.data.success !== undefined) {
+  //       commit("create_success");
+  //     }
+  //     return res;
+  //   } catch (error) {
+  //     commit("create_error", error);
+  //   }
+  // },
 };
 
 const mutations = {
@@ -103,17 +104,17 @@ const mutations = {
   create_error(state, err) {
     state.error = err.response.data.msg;
   },
-  // edit_request(state) {
-  //   state.error = null;
-  //   state.status = "loading";
-  // },
-  // edit_success(state) {
-  //   state.error = null;
-  //   state.status = "success";
-  // },
-  // edit_error(state, err) {
-  //   state.error = err.response.data.msg;
-  // },
+  edit_request(state) {
+    state.error = null;
+    state.status = "loading";
+  },
+  edit_success(state) {
+    state.error = null;
+    state.status = "success";
+  },
+  edit_error(state, err) {
+    state.error = err.response.data.msg;
+  },
 };
 
 export default {

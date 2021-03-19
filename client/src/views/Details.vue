@@ -45,27 +45,7 @@
         <p style="text-align: left;">{{ post.description }}</p>
         <br />
         <br />
-        <div class="row">
-          <div class="col-lg-6" v-if="!hasLiked">
-            <button
-              v-on:click="likePost"
-              class="btn btn-primary"
-              style="color: white;"
-            >
-              Like
-            </button>
-          </div>
-          <div v-if="hasLiked" class="col-lg-6">
-            <button
-              v-on:click="unlikePost"
-              class="btn btn-primary"
-              style="color: white;"
-            >
-              Unlike
-            </button>
-          </div>
-          <div class="col-lg-6">Likes: {{ likesLength }}</div>
-        </div>
+        <LikePost />
         <br />
         <h5>Comments</h5>
         <div style="margin-top: 20px;">
@@ -100,86 +80,67 @@
 </template>
 
 <script>
-import axios from "axios";
 import jwt from "jsonwebtoken";
-import { mapActions } from "vuex";
+import postServices from "../services/postServices";
+import LikePost from "../components/LikePost";
 
 export default {
   data() {
     return {
-      hasLiked: false,
+      uniqueKey: 0,
       userId: "",
       post: {},
       commentText: "",
       likesLength: 0,
     };
   },
+  components: {
+    LikePost,
+  },
   methods: {
-    ...mapActions(["getOne"]),
-    likePost() {
-      const postId = this.$route.params.postId;
-
-      axios.get(`http://localhost:5000/api/posts/like/${postId}`).then(() => {
-        axios
-          .get(`http://localhost:5000/api/posts/${postId}`)
-          .then((result) => {
-            this.likesLength = result.data.likes.length;
-            if (this.hasLiked === false) {
-              this.hasLiked = true;
-            } else {
-              this.hasLiked = false;
-            }
-          });
-      });
-    },
-    unlikePost() {
-      const postId = this.$route.params.postId;
-      axios.get(`http://localhost:5000/api/posts/unlike/${postId}`).then(() => {
-        axios
-          .get(`http://localhost:5000/api/posts/${postId}`)
-          .then((result) => {
-            this.likesLength = result.data.likes.length;
-            if (this.hasLiked === false) {
-              this.hasLiked = true;
-            } else {
-              this.hasLiked = false;
-            }
-          });
-      });
-    },
-
+   
     deletePost() {
       const postId = this.$route.params.postId;
-      axios
-        .delete(`http://localhost:5000/api/posts/delete/${postId}`)
-        .then(() => {
-          this.$router.push(`/`);
-        });
+      // axios
+      //   .delete(`http://localhost:5000/api/posts/delete/${postId}`)
+      //   .then(() => {
+      //     this.$router.push(`/`);
+      //   });
     },
 
     commentPost() {
-      const postId = this.$route.params.postId;
-      const commentBody = {
-        comment: this.commentText,
-      };
-
-      axios
-        .put(`http://localhost:5000/api/posts/comment/${postId}`, commentBody)
-        .then(() => {
-          this.$router.go();
-        });
+      //   const postId = this.$route.params.postId;
+      //   const commentBody = {
+      //     comment: this.commentText,
+      //   };
+      //   axios
+      //     .put(`http://localhost:5000/api/posts/comment/${postId}`, commentBody)
+      //     .then(() => {
+      //       this.$router.go();
+      //     });
     },
   },
-  created() {
-    const token = localStorage.getItem("token").slice(7);
-    let decoded = jwt.verify(token, "yoursecret");
-    this.userId = decoded._id;
+  async created() {
+    try {
+      const token = localStorage.getItem("token").slice(7);
+      let decoded = jwt.verify(token, "yoursecret");
+      this.userId = decoded._id;
 
-    const postId = this.$route.params.postId;
+      const postId = this.$route.params.postId;
 
-    this.getOne(postId).then((res) => {
-      this.post = res.data;
-    });
+      postServices.getOne(postId).then((res) => {
+        this.post = res.data;
+        // this.likesLength = res.data.likes.length;
+        if (res.data.likes.includes(decoded._id)) {
+          this.hasLiked = true;
+        } else {
+          this.hasLiked = false;
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
     // axios.get(`http://localhost:5000/api/posts/${postId}`).then((result) => {
     //   this.post = result.data;
     //   this.likesLength = result.data.likes.length;

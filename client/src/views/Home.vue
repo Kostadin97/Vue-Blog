@@ -37,9 +37,7 @@
 </template>
 
 <script>
-// import axios from "axios";
-import { mapActions } from "vuex";
-
+import postServices from "../services/postServices";
 export default {
   name: "home",
   data() {
@@ -47,22 +45,15 @@ export default {
       posts: [],
     };
   },
-  methods: {
-    ...mapActions(["getAll"]),
-  },
   created() {
-    this.posts = this.getAll();
-    this.getAll().then((res) => {
+    postServices.getAll().then((res) => {
       this.posts = res.data;
     });
   },
-  // created() {
-
-  // },
 };
 </script>
 
-<style>
+<style scoped>
 .card {
   width: 18rem;
   margin-left: 6%;
