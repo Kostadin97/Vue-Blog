@@ -91,7 +91,6 @@ export default {
           `http://localhost:5000/api/posts/edit/${postId}`,
           postData
         );
-        console.log(res);
         if (res.data.success) {
           commit("edit_success");
           this.$router.push("/");

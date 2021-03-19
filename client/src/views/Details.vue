@@ -98,9 +98,8 @@ export default {
     LikePost,
   },
   methods: {
-   
     deletePost() {
-      const postId = this.$route.params.postId;
+      // const postId = this.$route.params.postId;
       // axios
       //   .delete(`http://localhost:5000/api/posts/delete/${postId}`)
       //   .then(() => {
@@ -121,35 +120,21 @@ export default {
     },
   },
   async created() {
-    try {
-      const token = localStorage.getItem("token").slice(7);
-      let decoded = jwt.verify(token, "yoursecret");
-      this.userId = decoded._id;
+    const token = localStorage.getItem("token").slice(7);
+    let decoded = jwt.verify(token, "yoursecret");
+    this.userId = decoded._id;
 
-      const postId = this.$route.params.postId;
+    const postId = this.$route.params.postId;
 
-      postServices.getOne(postId).then((res) => {
-        this.post = res.data;
-        // this.likesLength = res.data.likes.length;
-        if (res.data.likes.includes(decoded._id)) {
-          this.hasLiked = true;
-        } else {
-          this.hasLiked = false;
-        }
-      });
-    } catch (error) {
-      console.log(error);
-    }
-
-    // axios.get(`http://localhost:5000/api/posts/${postId}`).then((result) => {
-    //   this.post = result.data;
-    //   this.likesLength = result.data.likes.length;
-    //   if (result.data.likes.includes(decoded._id)) {
-    //     this.hasLiked = true;
-    //   } else {
-    //     this.hasLiked = false;
-    //   }
-    // });
+    postServices.getOne(postId).then((res) => {
+      this.post = res.data;
+      // this.likesLength = res.data.likes.length;
+      if (res.data.likes.includes(decoded._id)) {
+        this.hasLiked = true;
+      } else {
+        this.hasLiked = false;
+      }
+    });
   },
 };
 </script>
@@ -157,9 +142,6 @@ export default {
 <style>
 a {
   border-radius: 10px;
-}
-hr {
-  border-top: 1px dashed red;
 }
 .form-input {
   display: inline-block;
