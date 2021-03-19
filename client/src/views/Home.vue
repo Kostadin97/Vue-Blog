@@ -10,7 +10,7 @@
           :src="post.imageUrl"
           alt="Card image cap"
         />
-        <div class="card-body" v-if="renderMyComponent">
+        <div class="card-body">
           <h5 class="card-title">{{ post.title }}</h5>
 
           <p class="card-text">
@@ -44,7 +44,6 @@ export default {
   name: "home",
   data() {
     return {
-      renderMyComponent: true,
       posts: [],
     };
   },

@@ -1,9 +1,6 @@
 import axios from "axios";
 
 const state = {
-  token: localStorage.getItem("token") || "",
-  user: {},
-  status: "",
   error: null,
 };
 
@@ -39,12 +36,16 @@ const actions = {
   },
 
   // async edit({ commit }, id, data) {
-  //   const postId = id;
-  //   const postData = data;
   //   try {
+  //     const postId = id;
+  //     const postData = data;
   //     commit("edit_request");
-  //     axios.put(`http://localhost:5000/api/posts/edit/${postId}`, postData);
+  //     let res = axios.put(
+  //       `http://localhost:5000/api/posts/edit/${postId}`,
+  //       postData
+  //     );
   //     commit("edit_success");
+  //     return res;
   //   } catch (error) {
   //     commit("edit_error", error);
   //   }

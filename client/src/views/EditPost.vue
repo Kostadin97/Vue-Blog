@@ -53,7 +53,6 @@
 
 <script>
 import axios from "axios";
-import { mapActions } from "vuex";
 
 export default {
   data() {
@@ -65,11 +64,9 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["edit"]),
-
-    editPost() {
-      const postId = this.$route.params.postId;
-      const postData = {
+    async editPost() {
+      let postId = this.$route.params.postId;
+      let postData = {
         title: this.post.title,
         description: this.post.description,
         imageUrl: this.post.imageUrl,
@@ -79,16 +76,12 @@ export default {
         .then(() => {
           this.$router.push(`/details/${postId}`);
         });
-
-      // this.edit(postId, postData).then(() => {
-      //   console.log(res);
-      //   this.$router.push(`/details/${postId}`);
-      // });
     },
   },
 
-  async created() {
-    const postId = await this.$route.params.postId;
+  created() {
+    const postId = this.$route.params.postId;
+
     axios.get(`http://localhost:5000/api/posts/${postId}`).then((result) => {
       this.post = result.data;
     });
