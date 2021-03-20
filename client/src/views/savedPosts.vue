@@ -11,7 +11,7 @@
           alt="Card image cap"
         />
         <div class="card-body">
-          <h5 class="card-title">{{ post.likes.includes() }}</h5>
+          <h5 class="card-title">{{ post.title }}</h5>
 
           <p class="card-text">
             {{ post.description.slice(0, 30) + "..." }}
@@ -47,14 +47,21 @@ export default {
     };
   },
   created() {
-    axios.get("http://localhost:5000/api/posts").then((result) => {
-      this.posts = result.data;
+    axios.get("http://localhost:5000/api/posts/saved").then((result) => {
+      // this.posts = result.data;
+      let postsIdsArray = result.data;
+      postsIdsArray.forEach((postId) => {
+        axios.get(`http://localhost:5000/api/posts/${postId}`).then((res) => {
+          // console.log(res);
+          this.posts.push(res.data);
+        });
+      });
     });
   },
 };
 </script>
 
-<style>
+<style scoped>
 .card {
   width: 18rem;
   margin-left: 6%;

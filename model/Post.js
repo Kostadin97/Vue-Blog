@@ -25,6 +25,7 @@ const PostSchema = new Schema({
   },
   likes: [],
   comments: [],
+  savedPosts: [],
 });
 
 module.exports = Post = mongoose.model("posts", PostSchema);

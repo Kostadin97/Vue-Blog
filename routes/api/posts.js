@@ -10,13 +10,65 @@ router.get("/", (req, res) => {
   });
 });
 
+router.get("/saved", (req, res) => {
+  const token = req.headers.authorization.split(" ")[1];
+  // const token = req.headers.token;
+  const decoded = jwt.verify(token, "yoursecret");
+  const userId = decoded._id;
+
+  let userSavedPosts;
+
+  User.findById(userId)
+    .then((user) => {
+      userSavedPosts = user.savedPosts;
+    })
+    .then(() => {
+      res.status(200).json(userSavedPosts);
+    });
+});
+
 router.get("/:id", (req, res) => {
   const id = req.params.id;
-
   Post.findById(id).then((post) => {
     return res.status(200).json(post);
   });
 });
+
+router.put("/save/:id", (req, res) => {
+  const token = req.headers.authorization.split(" ")[1];
+  // const token = req.headers.token;
+  const decoded = jwt.verify(token, "yoursecret");
+  const userId = decoded._id;
+
+  const postId = req.params.id;
+
+  User.findById(userId)
+    .then((user) => {
+      user.savedPosts.push(postId);
+      user.save();
+    })
+    .then(() => {
+      return res.status(200).json({ msg: "Post Saved Successful." });
+    })
+    .catch((err) => {
+      return res.status(500).json({
+        msg: `Post with id: ${postId} was NOT saved successfully.`,
+      });
+    });
+});
+
+// router.get("/savedposts", (req, res) => {
+// console.log(req.headers);
+// const token = req.headers.authorization.split(" ")[1];
+// const decoded = jwt.verify(token, "yoursecret");
+// const userId = decoded._id;
+// User.findById(userId).then((res) => {
+//   console.log(res);
+// });
+//   Post.find({}).then((posts) => {
+//     res.status(200).json(posts);
+//   });
+// });
 
 router.post("/create", (req, res) => {
   const { title, description, imageUrl } = req.body;

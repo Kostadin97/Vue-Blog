@@ -70,6 +70,10 @@
 
         <br />
 
+        <SavedPost />
+
+        <br />
+
         <div style="margin-top: 20px;">
           <h5>Comments</h5>
           <div style="width: 100%; padding: 10px;">
@@ -101,10 +105,13 @@ import jwt from "jsonwebtoken";
 import postServices from "../services/postServices";
 import LikePost from "../components/LikePost";
 import CommentPost from "../components/CommentPost";
+import SavedPost from "../components/SavedPost";
 
 export default {
   data() {
     return {
+      isSaved: Boolean,
+      savedPosts: [],
       uniqueLikesKey: 1,
       uniqueCommentsKey: 1,
       userId: "",
@@ -117,6 +124,7 @@ export default {
   components: {
     LikePost,
     CommentPost,
+    SavedPost,
   },
   methods: {
     async loadPosts() {
