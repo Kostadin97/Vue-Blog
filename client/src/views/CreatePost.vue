@@ -49,8 +49,8 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
-// import postServices from "../services/postServices";
+import postServices from "../services/postServices";
+
 export default {
   data() {
     return {
@@ -60,23 +60,17 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["create"]),
     createPost() {
       let post = {
         title: this.title,
         description: this.description,
         imageUrl: this.imageUrl,
       };
-      this.create(post).then((res) => {
+      postServices.createPost(post).then((res) => {
         if (res.data.success) {
           this.$router.push("/");
         }
       });
-      // postServices.createPost(post).then((res) => {
-      //   if (res.data.success) {
-      //     this.$router.push("/");
-      //   }
-      // });
     },
   },
 };

@@ -52,9 +52,8 @@
 </template>
 
 <script>
-import axios from "axios";
-import { mapActions } from "vuex";
-import store from "../store";
+// import store from "../store";
+import postServices from "../services/postServices";
 
 export default {
   data() {
@@ -66,13 +65,9 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["edit"]),
-    ...mapActions(["getOne"]),
-
     async loadPosts() {
       let postId = await this.$route.params.postId;
-      let res = await this.getOne(postId);
-
+      let res = await postServices.getOne(postId);
       this.post = await res.data;
     },
 
@@ -83,21 +78,12 @@ export default {
         description: this.post.description,
         imageUrl: this.post.imageUrl,
       };
-      const commit = await store.commit;
-      try {
-        commit("edit_request");
 
-        let res = await axios.put(
-          `http://localhost:5000/api/posts/edit/${postId}`,
-          postData
-        );
+      postServices.editPost(postId, postData).then((res) => {
         if (res.data.success) {
-          commit("edit_success");
           this.$router.push("/");
         }
-      } catch (error) {
-        commit("edit_error", error);
-      }
+      });
     },
   },
 

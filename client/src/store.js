@@ -51,6 +51,30 @@ const store = new Vuex.Store({
     edit_error(state, err) {
       state.error = err.response.data.msg;
     },
+
+    like_request(state) {
+      state.error = null;
+      state.status = "loading";
+    },
+    like_success(state) {
+      state.error = null;
+      state.status = "success";
+    },
+    like_error(state, err) {
+      state.error = err.response.data.msg;
+    },
+
+    unlike_request(state) {
+      state.error = null;
+      state.status = "loading";
+    },
+    unlike_success(state) {
+      state.error = null;
+      state.status = "success";
+    },
+    unlike_error(state, err) {
+      state.error = err.response.data.msg;
+    },
   },
   actions: {
     async getOne({ commit }, postId) {
@@ -94,6 +118,28 @@ const store = new Vuex.Store({
         commit("edit_error", error);
       }
     },
+  },
+
+  async likePost({ commit }, postId) {
+    try {
+      commit("like_request");
+      let res = axios.get(`http://localhost:5000/api/posts/like/${postId}`);
+      commit("like_success");
+      return res;
+    } catch (error) {
+      commit("like_error", error);
+    }
+  },
+
+  async unlikePost({ commit }, postId) {
+    try {
+      commit("unlike_request");
+      let res = axios.get(`http://localhost:5000/api/posts/unlike/${postId}`);
+      commit("unlike_success");
+      return res;
+    } catch (error) {
+      commit("unlike_error", error);
+    }
   },
 });
 

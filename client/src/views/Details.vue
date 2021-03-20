@@ -45,10 +45,33 @@
         <p style="text-align: left;">{{ post.description }}</p>
         <br />
         <br />
-        <LikePost />
+        <div class="row">
+          <div class="col-lg-6">
+            <button
+              v-if="!hasLiked"
+              v-on:click="likePost"
+              class="btn btn-primary"
+              style="color: white; float: left;"
+            >
+              Like
+            </button>
+
+            <button
+              v-if="hasLiked"
+              v-on:click="unlikePost"
+              class="btn btn-primary"
+              style="color: white; float: left;"
+            >
+              Unlike
+            </button>
+          </div>
+          <LikePost :key="uniqueLikesKey" />
+        </div>
+
         <br />
-        <h5>Comments</h5>
+
         <div style="margin-top: 20px;">
+          <h5>Comments</h5>
           <div style="width: 100%; padding: 10px;">
             <form @submit.prevent="commentPost">
               <div class="form-group form-input">
@@ -65,14 +88,8 @@
                 Comment
               </button>
             </form>
+            <CommentPost :key="uniqueCommentsKey" />
           </div>
-          <p
-            style="text-align: left;"
-            v-for="(comment, index) in post.comments"
-            :key="index"
-          >
-            {{ comment.author.username }}: {{ comment.comment }}
-          </p>
         </div>
       </div>
     </div>
@@ -83,58 +100,76 @@
 import jwt from "jsonwebtoken";
 import postServices from "../services/postServices";
 import LikePost from "../components/LikePost";
+import CommentPost from "../components/CommentPost";
 
 export default {
   data() {
     return {
-      uniqueKey: 0,
+      uniqueLikesKey: 1,
+      uniqueCommentsKey: 1,
       userId: "",
       post: {},
       commentText: "",
       likesLength: 0,
+      hasLiked: false,
     };
   },
   components: {
     LikePost,
+    CommentPost,
   },
   methods: {
-    deletePost() {
-      // const postId = this.$route.params.postId;
-      // axios
-      //   .delete(`http://localhost:5000/api/posts/delete/${postId}`)
-      //   .then(() => {
-      //     this.$router.push(`/`);
-      //   });
-    },
+    async loadPosts() {
+      const token = localStorage.getItem("token").slice(7);
+      const userId = jwt.verify(token, "yoursecret")._id;
 
-    commentPost() {
-      //   const postId = this.$route.params.postId;
-      //   const commentBody = {
-      //     comment: this.commentText,
-      //   };
-      //   axios
-      //     .put(`http://localhost:5000/api/posts/comment/${postId}`, commentBody)
-      //     .then(() => {
-      //       this.$router.go();
-      //     });
-    },
-  },
-  async created() {
-    const token = localStorage.getItem("token").slice(7);
-    let decoded = jwt.verify(token, "yoursecret");
-    this.userId = decoded._id;
-
-    const postId = this.$route.params.postId;
-
-    postServices.getOne(postId).then((res) => {
-      this.post = res.data;
-      // this.likesLength = res.data.likes.length;
-      if (res.data.likes.includes(decoded._id)) {
+      let postId = await this.$route.params.postId;
+      let res = await postServices.getOne(postId);
+      if (res.data.likes.includes(userId)) {
         this.hasLiked = true;
       } else {
         this.hasLiked = false;
       }
-    });
+      this.post = await res.data;
+    },
+
+    async likePost() {
+      const postId = await this.$route.params.postId;
+      postServices.likePost(postId).then(() => {
+        this.uniqueLikesKey++;
+        this.hasLiked = true;
+      });
+    },
+
+    async unlikePost() {
+      const postId = await this.$route.params.postId;
+      postServices.unlikePost(postId).then(() => {
+        this.uniqueLikesKey++;
+        this.hasLiked = false;
+      });
+    },
+
+    async commentPost() {
+      const postId = await this.$route.params.postId;
+      const commentBody = {
+        comment: this.commentText,
+      };
+
+      postServices.commentPost(postId, commentBody).then(() => {
+        this.uniqueCommentsKey++;
+        this.commentText = "";
+      });
+    },
+
+    async deletePost() {
+      const postId = await this.$route.params.postId;
+      postServices.deletePost(postId).then(() => {
+        this.$router.push("/");
+      });
+    },
+  },
+  async created() {
+    await this.loadPosts();
   },
 };
 </script>

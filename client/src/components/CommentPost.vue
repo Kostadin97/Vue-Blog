@@ -1,5 +1,13 @@
 <template>
-  <div class="col-lg-6">Likes: {{ likesLength }}</div>
+  <div>
+    <p
+      style="text-align: left;"
+      v-for="(comment, index) in post.comments"
+      :key="index"
+    >
+      {{ comment.author.username }}: {{ comment.comment }}
+    </p>
+  </div>
 </template>
 
 <script>
@@ -8,15 +16,14 @@ import postServices from "../services/postServices";
 export default {
   data() {
     return {
-      likesLength: 0,
+      post: [],
     };
   },
   methods: {
     async loadPosts() {
       let postId = await this.$route.params.postId;
       let res = await postServices.getOne(postId);
-      this.likesLength = res.data.likes.length;
-      this.uniqueKey++;
+      this.post = res.data;
     },
   },
   created() {

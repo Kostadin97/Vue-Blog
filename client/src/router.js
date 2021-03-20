@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./views/Home.vue";
 import store from "./store";
 
 Vue.use(Router);
@@ -12,7 +11,12 @@ const router = new Router({
     {
       path: "/",
       name: "home",
-      component: Home,
+      component: () => import("./views/Home.vue"),
+    },
+    {
+      path: "/myposts",
+      name: "myposts",
+      component: () => import("./views/MyPosts.vue"),
     },
     {
       path: "/create",
