@@ -32,6 +32,8 @@
 import jwt from "jsonwebtoken";
 import postServices from "../services/postServices";
 
+import store from "../store";
+
 export default {
   name: "home",
   data() {
@@ -41,16 +43,21 @@ export default {
   },
   methods: {
     async loadPosts() {
+      store.commit("getmyposts_request");
       const token = localStorage.getItem("token").slice(7);
       const userId = jwt.verify(token, "yoursecret")._id;
-
-      let res = await postServices.getMyPosts();
-      let allPosts = await res.data;
-      allPosts.map((x) => {
-        if (x.author === userId) {
-          this.posts.push(x);
-        }
-      });
+      try {
+        let res = await postServices.getMyPosts();
+        store.commit("getmyposts_success");
+        let allPosts = await res.data;
+        allPosts.map((x) => {
+          if (x.author === userId) {
+            this.posts.push(x);
+          }
+        });
+      } catch (error) {
+        store.commit("getmyposts_error", error);
+      }
     },
   },
   async created() {

@@ -50,6 +50,7 @@
 
 <script>
 import postServices from "../services/postServices";
+import store from "../store";
 
 export default {
   data() {
@@ -60,17 +61,25 @@ export default {
     };
   },
   methods: {
-    createPost() {
+    async createPost() {
       let post = {
         title: this.title,
         description: this.description,
         imageUrl: this.imageUrl,
       };
-      postServices.createPost(post).then((res) => {
-        if (res.data.success) {
-          this.$router.push("/");
-        }
-      });
+
+      store.commit("create_request");
+      postServices
+        .createPost(post)
+        .then((res) => {
+          if (res.data.success) {
+            store.commit("create_success");
+            this.$router.push("/");
+          }
+        })
+        .catch((error) => {
+          store.commit("create_error", error);
+        });
     },
   },
 };

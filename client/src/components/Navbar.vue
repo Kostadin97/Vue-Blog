@@ -32,15 +32,16 @@
         <li class="nav-item" v-if="!isLoggedIn">
           <router-link to="/register" class="nav-link">Register</router-link>
         </li>
-        
-        <li class="nav-item" v-if="isLoggedIn">
-          <router-link to="/profile" class="nav-link">Profile</router-link>
-        </li>
         <li class="nav-item" v-if="isLoggedIn">
           <router-link to="/myposts" class="nav-link">My Posts</router-link>
         </li>
         <li class="nav-item" v-if="isLoggedIn">
-          <a href="#" to="/logout" class="nav-link" @click.prevent="logoutUser">Logout</a>
+          <router-link to="/profile" class="nav-link">Profile</router-link>
+        </li>
+        <li class="nav-item" v-if="isLoggedIn">
+          <a href="#" to="/logout" class="nav-link" @click.prevent="logoutUser"
+            >Logout</a
+          >
         </li>
       </ul>
     </div>
@@ -51,16 +52,15 @@
 import { mapGetters, mapActions } from "vuex";
 export default {
   computed: {
-    ...mapGetters(["isLoggedIn"])
+    ...mapGetters(["isLoggedIn"]),
   },
   methods: {
     ...mapActions(["logout"]),
     logoutUser() {
       this.logout();
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>

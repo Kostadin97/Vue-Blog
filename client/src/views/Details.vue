@@ -107,11 +107,12 @@ import LikePost from "../components/LikePost";
 import CommentPost from "../components/CommentPost";
 import SavedPost from "../components/SavedPost";
 
+import store from "../store";
+
 export default {
   data() {
     return {
       isSaved: Boolean,
-      savedPosts: [],
       uniqueLikesKey: 1,
       uniqueCommentsKey: 1,
       userId: "",
@@ -130,15 +131,20 @@ export default {
     async loadPosts() {
       const token = localStorage.getItem("token").slice(7);
       const userId = jwt.verify(token, "yoursecret")._id;
-
-      let postId = await this.$route.params.postId;
-      let res = await postServices.getOne(postId);
-      if (res.data.likes.includes(userId)) {
-        this.hasLiked = true;
-      } else {
-        this.hasLiked = false;
+      try {
+        store.commit("getone_request");
+        let postId = await this.$route.params.postId;
+        let res = await postServices.getOne(postId);
+        store.commit("getone_success");
+        if (res.data.likes.includes(userId)) {
+          this.hasLiked = true;
+        } else {
+          this.hasLiked = false;
+        }
+        this.post = await res.data;
+      } catch (error) {
+        store.commit("getone_error", error);
       }
-      this.post = await res.data;
     },
 
     async likePost() {

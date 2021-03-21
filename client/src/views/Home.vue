@@ -38,6 +38,8 @@
 
 <script>
 import postServices from "../services/postServices";
+import store from "../store";
+
 export default {
   name: "home",
   data() {
@@ -46,9 +48,16 @@ export default {
     };
   },
   created() {
-    postServices.getAll().then((res) => {
-      this.posts = res.data;
-    });
+    store.commit("getall_request");
+    postServices
+      .getAll()
+      .then((res) => {
+        store.commit("getall_success");
+        this.posts = res.data;
+      })
+      .catch((error) => {
+        store.commit("getall_error", error);
+      });
   },
 };
 </script>

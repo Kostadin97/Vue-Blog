@@ -17,6 +17,39 @@ const store = new Vuex.Store({
     creationError: (state) => state.error,
   },
   mutations: {
+    getsavedposts_request(state) {
+      state.error = null;
+      state.status = "loading";
+    },
+    getsavedposts_success(state) {
+      state.error = null;
+      state.status = "success";
+    },
+    getsavedposts_error(state, err) {
+      state.error = err.response.data.msg;
+    },
+    getmyposts_request(state) {
+      state.error = null;
+      state.status = "loading";
+    },
+    getmyposts_success(state) {
+      state.error = null;
+      state.status = "success";
+    },
+    getmyposts_error(state, err) {
+      state.error = err.response.data.msg;
+    },
+    getall_request(state) {
+      state.error = null;
+      state.status = "loading";
+    },
+    getall_success(state) {
+      state.error = null;
+      state.status = "success";
+    },
+    getall_error(state, err) {
+      state.error = err.response.data.msg;
+    },
     getone_request(state) {
       state.error = null;
       state.status = "loading";
@@ -77,70 +110,7 @@ const store = new Vuex.Store({
     },
   },
   actions: {
-    async getOne({ commit }, postId) {
-      try {
-        commit("getone_request");
-        let res = await axios.get(`http://localhost:5000/api/posts/${postId}`);
-        commit("getone_success");
-        return res;
-      } catch (error) {
-        commit("create_error", error);
-      }
-    },
-
-    async create({ commit }, postData) {
-      try {
-        commit("create_request");
-        let res = await axios.post(
-          "http://localhost:5000/api/posts/create",
-          postData
-        );
-
-        if (res.data.success !== undefined) {
-          commit("create_success");
-        }
-        return res;
-      } catch (error) {
-        commit("create_error", error);
-      }
-    },
-
-    async edit({ commit }, postId, postData) {
-      try {
-        commit("edit_request");
-        let res = axios.put(
-          `http://localhost:5000/api/posts/edit/${postId}`,
-          postData
-        );
-        commit("edit_success");
-        return res;
-      } catch (error) {
-        commit("edit_error", error);
-      }
-    },
-  },
-
-  async likePost({ commit }, postId) {
-    try {
-      commit("like_request");
-      let res = axios.get(`http://localhost:5000/api/posts/like/${postId}`);
-      commit("like_success");
-      return res;
-    } catch (error) {
-      commit("like_error", error);
-    }
-  },
-
-  async unlikePost({ commit }, postId) {
-    try {
-      commit("unlike_request");
-      let res = axios.get(`http://localhost:5000/api/posts/unlike/${postId}`);
-      commit("unlike_success");
-      return res;
-    } catch (error) {
-      commit("unlike_error", error);
-    }
-  },
+  }
 });
 
 export default store;

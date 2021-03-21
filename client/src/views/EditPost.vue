@@ -52,7 +52,7 @@
 </template>
 
 <script>
-// import store from "../store";
+import store from "../store";
 import postServices from "../services/postServices";
 
 export default {
@@ -79,11 +79,18 @@ export default {
         imageUrl: this.post.imageUrl,
       };
 
-      postServices.editPost(postId, postData).then((res) => {
-        if (res.data.success) {
-          this.$router.push("/");
-        }
-      });
+      store.commit("edit_request");
+      postServices
+        .editPost(postId, postData)
+        .then((res) => {
+          if (res.data.success) {
+            store.commit("edit_success");
+            this.$router.push("/");
+          }
+        })
+        .catch((error) => {
+          store.commit("edit_error", error);
+        });
     },
   },
 

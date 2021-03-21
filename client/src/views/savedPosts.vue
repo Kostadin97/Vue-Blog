@@ -38,6 +38,7 @@
 
 <script>
 import axios from "axios";
+import store from "../store";
 
 export default {
   name: "home",
@@ -47,16 +48,21 @@ export default {
     };
   },
   created() {
-    axios.get("http://localhost:5000/api/posts/saved").then((result) => {
-      // this.posts = result.data;
-      let postsIdsArray = result.data;
-      postsIdsArray.forEach((postId) => {
-        axios.get(`http://localhost:5000/api/posts/${postId}`).then((res) => {
-          // console.log(res);
-          this.posts.push(res.data);
+    store.commit("getsavedposts_request");
+    axios
+      .get("http://localhost:5000/api/posts/saved")
+      .then((result) => {
+        let postsIdsArray = result.data;
+        postsIdsArray.forEach((postId) => {
+          axios.get(`http://localhost:5000/api/posts/${postId}`).then((res) => {
+            store.commit("getsavedposts_success");
+            this.posts.push(res.data);
+          });
         });
+      })
+      .catch((error) => {
+        store.commit("getsavedposts_error", error);
       });
-    });
   },
 };
 </script>
