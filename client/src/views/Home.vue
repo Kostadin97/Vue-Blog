@@ -1,8 +1,11 @@
 <template>
   <div class="container">
-    <h1 class="latest-posts-h1">Latest Posts</h1>
+    <h1 v-if="isLoggedIn" class="latest-posts-h1">Latest Posts</h1>
+    <h1 v-if="!isLoggedIn" class="latest-posts-h1">
+      Sign-In or Sign-Up To See All Posts or to Create a Post
+    </h1>
     <hr />
-    <div class="row">
+    <div class="row" v-if="isLoggedIn">
       <div id="card" class="card" v-for="post in posts" :key="post._id">
         <img
           style="max-height: 190px;"
@@ -33,12 +36,25 @@
         </div>
       </div>
     </div>
+    <div v-if="!isLoggedIn" style="text-align: center;">
+      <ul style="list-style-type: none; margin-top: 60px;" class="row">
+        <li class="nav-item col-lg-6" v-if="!isLoggedIn">
+          <router-link to="/login" class="nav-link btn btn-primary"
+            >Sign into your existing account!</router-link
+          >
+        </li>
+        <li class="nav-item col-lg-6" v-if="!isLoggedIn">
+          <router-link to="/register" class="nav-link btn btn-primary">Register</router-link>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
 import postServices from "../services/postServices";
 import store from "../store";
+import { mapGetters } from "vuex";
 
 export default {
   name: "home",
@@ -46,6 +62,9 @@ export default {
     return {
       posts: [],
     };
+  },
+  computed: {
+    ...mapGetters(["isLoggedIn"]),
   },
   created() {
     store.commit("getall_request");
