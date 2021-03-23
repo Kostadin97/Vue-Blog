@@ -56,7 +56,7 @@ export default {
       };
       this.login(user).then((res) => {
         if (res.data.success) {
-          this.$router.push("/profile");
+          this.$router.push("/");
         }
       });
     },
