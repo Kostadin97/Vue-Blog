@@ -7,7 +7,6 @@
       <Errors v-if="error" :msg="error" />
       <router-view />
     </div>
-
   </div>
 </template>
 <script>
