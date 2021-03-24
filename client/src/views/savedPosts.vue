@@ -49,20 +49,6 @@ export default {
         });
       });
     });
-
-    // postsIdsArray.forEach((postId) => {
-    //   postServices
-    //     .getOne(postId)
-    //     .then((result) => {
-    //       console.log(result.data);
-    //       store.commit("getsavedposts_success");
-
-    //       this.posts.push(result.data);
-    //     })
-    //     .catch((error) => {
-    //       store.commit("getsavedposts_error", error);
-    //     });
-    // });
   },
 };
 </script>
