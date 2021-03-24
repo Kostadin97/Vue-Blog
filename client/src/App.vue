@@ -4,7 +4,7 @@
     <br />
     <br />
     <div class="container">
-      <Errors v-if="error || creationError" :msg="error || creationError" />
+      <Errors v-if="error" :msg="error" />
       <router-view />
     </div>
 
@@ -22,7 +22,6 @@ export default {
   },
   computed: {
     ...mapGetters(["error"]),
-    ...mapGetters(["creationError"]),
   },
 };
 </script>

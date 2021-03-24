@@ -12,19 +12,12 @@ router.get("/", (req, res) => {
 
 router.get("/saved", (req, res) => {
   const token = req.headers.authorization.split(" ")[1];
-  // const token = req.headers.token;
   const decoded = jwt.verify(token, "yoursecret");
   const userId = decoded._id;
 
-  let userSavedPosts;
-
-  User.findById(userId)
-    .then((user) => {
-      userSavedPosts = user.savedPosts;
-    })
-    .then(() => {
-      res.status(200).json(userSavedPosts);
-    });
+  User.findById(userId).then((user) => {
+    res.status(200).json(user.savedPosts);
+  });
 });
 
 router.get("/:id", (req, res) => {
@@ -56,19 +49,6 @@ router.put("/save/:id", (req, res) => {
       });
     });
 });
-
-// router.get("/savedposts", (req, res) => {
-// console.log(req.headers);
-// const token = req.headers.authorization.split(" ")[1];
-// const decoded = jwt.verify(token, "yoursecret");
-// const userId = decoded._id;
-// User.findById(userId).then((res) => {
-//   console.log(res);
-// });
-//   Post.find({}).then((posts) => {
-//     res.status(200).json(posts);
-//   });
-// });
 
 router.post("/create", (req, res) => {
   const { title, description, imageUrl } = req.body;

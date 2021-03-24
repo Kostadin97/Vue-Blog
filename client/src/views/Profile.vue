@@ -12,17 +12,20 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
+import authServices from "../services/authServices";
+import store from "../store";
+
 export default {
   computed: mapGetters(["user"]),
-  methods: {
-    ...mapActions(["getProfile"])
+  async created() {
+    store.commit("profile_request");
+    let res = await authServices.getProfile();
+    if (res.data.user) {
+      store.commit("user_profile", res.data.user);
+    }
   },
-  created() {
-    this.getProfile();
-  }
 };
 </script>
 
-<style>
-</style>
+<style></style>

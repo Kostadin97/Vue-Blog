@@ -49,15 +49,19 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
+import store from "../store";
+import authServices from "../services/authServices";
+
 export default {
   computed: {
     ...mapGetters(["isLoggedIn"]),
   },
   methods: {
-    ...mapActions(["logout"]),
-    logoutUser() {
-      this.logout();
+    async logoutUser() {
+      await authServices.logout();
+      store.commit("logout");
+      this.$router.push("/login");
     },
   },
 };

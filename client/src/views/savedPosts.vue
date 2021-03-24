@@ -37,8 +37,8 @@
 </template>
 
 <script>
-import axios from "axios";
 import store from "../store";
+import postServices from "../services/postServices";
 
 export default {
   name: "home",
@@ -47,22 +47,20 @@ export default {
       posts: [],
     };
   },
-  created() {
-    store.commit("getsavedposts_request");
-    axios
-      .get("http://localhost:5000/api/posts/saved")
-      .then((result) => {
-        let postsIdsArray = result.data;
-        postsIdsArray.forEach((postId) => {
-          axios.get(`http://localhost:5000/api/posts/${postId}`).then((res) => {
-            store.commit("getsavedposts_success");
-            this.posts.push(res.data);
-          });
+  async created() {
+    try {
+      store.commit("getsavedposts_request");
+      let res = await postServices.getSavedPosts();
+      let postsIdsArray = res.data;
+      postsIdsArray.forEach((postId) => {
+        postServices.getOne(postId).then((res) => {
+          store.commit("getsavedposts_success");
+          this.posts.push(res.data);
         });
-      })
-      .catch((error) => {
-        store.commit("getsavedposts_error", error);
       });
+    } catch (error) {
+      store.commit("getsavedposts_error", error);
+    }
   },
 };
 </script>

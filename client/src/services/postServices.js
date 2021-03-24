@@ -4,12 +4,16 @@ const getAll = () => {
   return axios.get("http://localhost:5000/api/posts");
 };
 
+const getOne = (postId) => {
+  return axios.get(`http://localhost:5000/api/posts/${postId}`);
+};
+
 const getMyPosts = () => {
   return axios.get("http://localhost:5000/api/posts");
 };
 
-const getOne = (postId) => {
-  return axios.get(`http://localhost:5000/api/posts/${postId}`);
+const getSavedPosts = () => {
+  return axios.get("http://localhost:5000/api/posts/saved");
 };
 
 const createPost = (postData) => {
@@ -22,7 +26,7 @@ const editPost = (postId, postData) => {
 
 const deletePost = (postId) => {
   return axios.delete(`http://localhost:5000/api/posts/delete/${postId}`);
-}
+};
 
 const commentPost = (postId, comment) => {
   return axios.put(
@@ -42,6 +46,7 @@ const unlikePost = (postId) => {
 export default {
   getAll,
   getOne,
+  getSavedPosts,
   getMyPosts,
   createPost,
   editPost,
