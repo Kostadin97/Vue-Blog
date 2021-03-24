@@ -41,19 +41,28 @@ export default {
     };
   },
   async created() {
-    try {
-      store.commit("getsavedposts_request");
-      let res = await postServices.getSavedPosts();
-      let postsIdsArray = res.data;
-      postsIdsArray.forEach((postId) => {
-        postServices.getOne(postId).then((res) => {
-          store.commit("getsavedposts_success");
-          this.posts.push(res.data);
+    store.commit("getsavedposts_request");
+    postServices.getSavedPosts().then((res) => {
+      res.data.forEach((postId) => {
+        postServices.getAll({ _id: postId }).then((result) => {
+          this.posts = result.data;
         });
       });
-    } catch (error) {
-      store.commit("getsavedposts_error", error);
-    }
+    });
+
+    // postsIdsArray.forEach((postId) => {
+    //   postServices
+    //     .getOne(postId)
+    //     .then((result) => {
+    //       console.log(result.data);
+    //       store.commit("getsavedposts_success");
+
+    //       this.posts.push(result.data);
+    //     })
+    //     .catch((error) => {
+    //       store.commit("getsavedposts_error", error);
+    //     });
+    // });
   },
 };
 </script>
