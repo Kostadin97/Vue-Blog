@@ -54,9 +54,11 @@ export default {
 </script>
 
 <style scoped>
+.row {
+  justify-content: space-around;
+}
 .card {
-  width: 18rem;
-  margin-left: 6%;
+  width: 22rem;
   margin-top: 20px;
 }
 
