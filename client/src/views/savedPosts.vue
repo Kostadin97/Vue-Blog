@@ -5,7 +5,7 @@
     <div class="row">
       <div id="card" class="card" v-for="post in posts" :key="post._id">
         <img
-          style="max-height: 190px;"
+          style="height: 180px;"
           class="card-img-top"
           :src="post.imageUrl"
           alt="Card image cap"
@@ -44,8 +44,8 @@ export default {
     store.commit("getsavedposts_request");
     postServices.getSavedPosts().then((res) => {
       res.data.forEach((postId) => {
-        postServices.getAll({ _id: postId }).then((result) => {
-          this.posts = result.data;
+        postServices.getOne(postId).then((result) => {
+          this.posts.push(result.data);
         });
       });
     });
