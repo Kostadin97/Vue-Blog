@@ -11,16 +11,10 @@ export default {
       likesLength: 0,
     };
   },
-  methods: {
-    async loadPosts() {
-      let postId = await this.$route.params.postId;
-      let res = await postServices.getOne(postId);
-      this.likesLength = res.data.likes.length;
-      this.uniqueKey++;
-    },
-  },
-  created() {
-    this.loadPosts();
+  async created() {
+    let postId = await this.$route.params.postId;
+    let res = await postServices.getOne(postId);
+    this.likesLength = await res.data.likes.length;
   },
 };
 </script>

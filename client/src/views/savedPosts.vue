@@ -18,15 +18,8 @@
           </p>
 
           <router-link
-            class="btn btn-light card-link"
-            style="float: left; width: 45%;"
-            :to="`/edit/${post._id}`"
-          >
-            Edit
-          </router-link>
-          <router-link
             class="btn btn-dark card-link"
-            style="float: left; width: 45%;"
+            style="float: left; width: 100%;"
             :to="`/details/${post._id}`"
             >Details</router-link
           >

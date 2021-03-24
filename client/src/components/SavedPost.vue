@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import postServices from "../services/postServices";
 export default {
   data() {
     return {
@@ -30,7 +30,7 @@ export default {
   methods: {
     async loadPosts() {
       const currentPostId = await this.$route.params.postId;
-      axios.get("http://localhost:5000/api/posts/saved").then((result) => {
+      postServices.getSavedPosts().then((result) => {
         let postsIdsArray = result.data;
         if (postsIdsArray.includes(currentPostId)) {
           this.isSaved = true;
@@ -42,11 +42,9 @@ export default {
 
     async savePost() {
       const currentPostId = await this.$route.params.postId;
-      axios
-        .put(`http://localhost:5000/api/posts/save/${currentPostId}`)
-        .then(() => {
-          this.isSaved = true;
-        });
+      postServices.savePost(currentPostId).then(() => {
+        this.isSaved = true;
+      });
     },
   },
   async created() {

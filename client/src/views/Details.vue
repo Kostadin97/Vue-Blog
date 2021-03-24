@@ -16,7 +16,7 @@
             :src="post.imageUrl"
             alt="Card image cap"
           />
-          <div class="card-body">
+          <div class="card-body" v-if="isAuthor">
             <router-link
               class="btn btn-light card-link"
               style="float: left; width: 45%;"
@@ -112,6 +112,7 @@ import store from "../store";
 export default {
   data() {
     return {
+      isAuthor: Boolean,
       isSaved: Boolean,
       uniqueLikesKey: 1,
       uniqueCommentsKey: 1,
@@ -140,6 +141,12 @@ export default {
           this.hasLiked = true;
         } else {
           this.hasLiked = false;
+        }
+
+        if (res.data.author === userId) {
+          this.isAuthor = true;
+        } else {
+          this.isAuthor = false;
         }
         this.post = await res.data;
       } catch (error) {

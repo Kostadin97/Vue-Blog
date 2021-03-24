@@ -24,6 +24,10 @@ const editPost = (postId, postData) => {
   return axios.put(`http://localhost:5000/api/posts/edit/${postId}`, postData);
 };
 
+const savePost = (postId) => {
+  return axios.put(`http://localhost:5000/api/posts/save/${postId}`);
+}
+
 const deletePost = (postId) => {
   return axios.delete(`http://localhost:5000/api/posts/delete/${postId}`);
 };
@@ -51,6 +55,7 @@ export default {
   createPost,
   editPost,
   deletePost,
+  savePost,
   commentPost,
   likePost,
   unlikePost,
