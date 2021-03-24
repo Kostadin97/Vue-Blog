@@ -65,7 +65,7 @@
               Unlike
             </button>
           </div>
-          <LikePost :key="uniqueLikesKey" />
+          <LikePost :key="uniqueLikesKey" v-bind:likesLength="likesLength" />
         </div>
 
         <br />
@@ -148,6 +148,7 @@ export default {
         } else {
           this.isAuthor = false;
         }
+        this.likesLength = await res.data.likes.length;
         this.post = await res.data;
       } catch (error) {
         store.commit("getone_error", error);
@@ -158,6 +159,7 @@ export default {
       const postId = await this.$route.params.postId;
       postServices.likePost(postId).then(() => {
         this.uniqueLikesKey++;
+        this.likesLength++;
         this.hasLiked = true;
       });
     },
@@ -166,6 +168,7 @@ export default {
       const postId = await this.$route.params.postId;
       postServices.unlikePost(postId).then(() => {
         this.uniqueLikesKey++;
+        this.likesLength--;
         this.hasLiked = false;
       });
     },

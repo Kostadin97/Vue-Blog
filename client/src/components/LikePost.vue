@@ -1,20 +1,21 @@
 <template>
-  <div class="col-lg-6">Likes: {{ likesLength }}</div>
+  <div class="col-lg-6">Likes: {{likesLength}}</div>
 </template>
 
 <script>
-import postServices from "../services/postServices";
+// import postServices from "../services/postServices";
 
 export default {
+  props: ["likesLength"],
   data() {
     return {
-      likesLength: 0,
     };
   },
   async created() {
-    let postId = await this.$route.params.postId;
-    let res = await postServices.getOne(postId);
-    this.likesLength = await res.data.likes.length;
+    // let postId = this.$route.params.postId;
+    // let res = await postServices.getOne(postId);
+    // this.likesLength = res.data.likes.length;
+    // console.log(likesLength);
   },
 };
 </script>
