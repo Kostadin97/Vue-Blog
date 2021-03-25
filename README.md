@@ -35,12 +35,12 @@ npm start
 ```
 
 # Compiles and hot-reloads for development
-Client
+## Client
 ```
 npm run serve
 ```
 
-Server
+## Server
 ```
 npm run dev
 ```
