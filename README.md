@@ -29,7 +29,17 @@ The frontend part runs on VueJs. The application uses VueX which serves as a sto
 npm install
 ```
 
-### Compiles and hot-reloads for development
+#Start of the Application
+```
+npm start
+```
+
+# Compiles and hot-reloads for development
+##Client
+```
+npm run serve
+```
+##Server
 ```
 npm run dev
 ```
