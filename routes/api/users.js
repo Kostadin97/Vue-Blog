@@ -17,7 +17,6 @@ router.post("/register", (req, res) => {
   let hasError = Boolean;
 
   if (password !== confirm_password) {
-    hasError = true;
     return res.status(400).json({
       msg: "Password do not match.",
     });
@@ -26,7 +25,6 @@ router.post("/register", (req, res) => {
   // Check for the unique Username
   User.findOne({ username: username }).then((user) => {
     if (user) {
-      hasError = true;
       return res.status(400).json({
         msg: "Username is already taken.",
       });
@@ -36,7 +34,6 @@ router.post("/register", (req, res) => {
   // Check for the unique Email
   User.findOne({ email: email }).then((user) => {
     if (user) {
-      hasError = true;
       return res.status(400).json({
         msg: "Email is already registered. Did you forgot your password?",
       });
@@ -44,7 +41,7 @@ router.post("/register", (req, res) => {
   });
 
   // The data is valid and now we can register the user
-  if (!hasError) {
+
     let newUser = new User({
       name,
       username,
@@ -66,7 +63,7 @@ router.post("/register", (req, res) => {
         });
       });
     });
-  }
+
 });
 
 /**
