@@ -6,7 +6,6 @@ const passport = require("passport");
 const key = require("../../config/keys").secret;
 const User = require("../../model/User");
 
-
 /**
  * @route POST api/users/register
  * @des Register the User
@@ -15,8 +14,10 @@ const User = require("../../model/User");
 
 router.post("/register", (req, res) => {
   let { name, username, email, password, confirm_password } = req.body;
+  let hasError = Boolean;
 
   if (password !== confirm_password) {
+    hasError = true;
     return res.status(400).json({
       msg: "Password do not match.",
     });
@@ -25,6 +26,7 @@ router.post("/register", (req, res) => {
   // Check for the unique Username
   User.findOne({ username: username }).then((user) => {
     if (user) {
+      hasError = true;
       return res.status(400).json({
         msg: "Username is already taken.",
       });
@@ -34,6 +36,7 @@ router.post("/register", (req, res) => {
   // Check for the unique Email
   User.findOne({ email: email }).then((user) => {
     if (user) {
+      hasError = true;
       return res.status(400).json({
         msg: "Email is already registered. Did you forgot your password?",
       });
@@ -41,27 +44,29 @@ router.post("/register", (req, res) => {
   });
 
   // The data is valid and now we can register the user
-  let newUser = new User({
-    name,
-    username,
-    password,
-    email,
-    savedPosts: [],
-  });
+  if (!hasError) {
+    let newUser = new User({
+      name,
+      username,
+      password,
+      email,
+      savedPosts: [],
+    });
 
-  // Hash the password
-  bcrypt.genSalt(10, (err, salt) => {
-    bcrypt.hash(newUser.password, salt, (err, hash) => {
-      if (err) throw err;
-      newUser.password = hash;
-      newUser.save().then((user) => {
-        return res.status(201).json({
-          success: true,
-          msg: "User is now registered.",
+    // Hash the password
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(newUser.password, salt, (err, hash) => {
+        if (err) throw err;
+        newUser.password = hash;
+        newUser.save().then((user) => {
+          return res.status(201).json({
+            success: true,
+            msg: "User is now registered.",
+          });
         });
       });
     });
-  });
+  }
 });
 
 /**
