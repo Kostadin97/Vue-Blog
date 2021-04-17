@@ -117,7 +117,21 @@ router.put("/edit/:id", (req, res) => {
 router.delete("/delete/:id", (req, res) => {
   const id = req.params.id;
 
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, "yoursecret");
+  const userId = decoded._id;
+
   Post.findByIdAndRemove(id)
+    .then(() => {
+      User.findById(userId).then((user) => {
+        // let current = user.savedPosts.find((x) => x === id);
+        const savedPosts = user.savedPosts;
+        const indexOf = savedPosts.indexOf(id);
+        console.log(savedPosts);
+        savedPosts.splice(indexOf, 1);
+        user.save();
+      });
+    })
     .then(() => {
       return res.status(200).json({ msg: "Post was deleted successfully." });
     })
